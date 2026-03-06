@@ -1,0 +1,377 @@
+    <style>
+        /* 
+         * DESIGN SYSTEM & THEME VARIABLES
+         * To manually set the theme, add class="theme-light" or class="theme-dark" to the <body> tag.
+         * Otherwise, it defaults to the system preference.
+         */
+        :root,
+        body.theme-light {
+            /* Light Theme Options */
+            --bg-color: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --card-bg: #ffffff;
+            --card-border: #e2e8f0;
+            --header-bg: rgba(255, 255, 255, 0.85);
+            --header-border: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            --shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+            --radius-lg: 16px;
+            --status-color: #10b981;
+        }
+
+        body.theme-dark {
+            /* Manual Dark Theme */
+            --bg-color: #0b0f19;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --card-bg: #111827;
+            --card-border: #1f2937;
+            --header-bg: rgba(11, 15, 25, 0.85);
+            --header-border: #1f2937;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.5);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+            --shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+        }
+
+        /* OVERRIDES: When checkbox is checked, force Dark Mode */
+        body:has(.theme-checkbox:checked) {
+            --bg-color: #0b0f19 !important;
+            --text-primary: #f8fafc !important;
+            --text-secondary: #94a3b8 !important;
+            --card-bg: #111827 !important;
+            --card-border: #1f2937 !important;
+            --header-bg: rgba(11, 15, 25, 0.85) !important;
+            --header-border: #1f2937 !important;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.5) !important;
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3) !important;
+            --shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4) !important;
+        }
+
+        body:has(.theme-checkbox:checked) .iframe-container {
+            background-color: rgba(255, 255, 255, 0.015) !important;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root:not(.theme-light) {
+                /* System Dark Theme defaults */
+                --bg-color: #0b0f19;
+                --text-primary: #f8fafc;
+                --text-secondary: #94a3b8;
+                --card-bg: #111827;
+                --card-border: #1f2937;
+                --header-bg: rgba(11, 15, 25, 0.85);
+                --header-border: #1f2937;
+                --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.5);
+                --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+                --shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+            }
+
+            /* INVERT LOGIC: If system is dark, checking the box should force Light Mode instead! */
+            body:has(.theme-checkbox:checked) {
+                --bg-color: #f1f5f9 !important;
+                --text-primary: #0f172a !important;
+                --text-secondary: #475569 !important;
+                --card-bg: #ffffff !important;
+                --card-border: #e2e8f0 !important;
+                --header-bg: rgba(255, 255, 255, 0.85) !important;
+                --header-border: #e2e8f0 !important;
+                --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05) !important;
+                --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05) !important;
+                --shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05) !important;
+            }
+
+            body:has(.theme-checkbox:checked) .iframe-container {
+                background-color: rgba(0, 0, 0, 0.015) !important;
+            }
+        }
+
+        /* RESET & BASE STYLES */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            min-height: 100vh;
+        }
+
+        /* HEADER */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: var(--header-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--header-border);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.25rem;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        /* Pure CSS generic logo icon for a polished feel */
+        .logo::before {
+            content: '';
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #3b82f6, #6366f1);
+            border-radius: 6px;
+        }
+
+        .page-title {
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-right: auto;
+            margin-left: 2.5rem;
+        }
+
+        .theme-toggle-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .theme-label-text {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            display: none;
+            /* Hidden by default on mobile, shown on desktop */
+        }
+
+        @media (min-width: 600px) {
+            .theme-label-text {
+                display: inline-block;
+            }
+        }
+
+        /* The invisible checkbox */
+        .theme-checkbox {
+            opacity: 0;
+            position: absolute;
+            width: 0;
+            height: 0;
+        }
+
+        /* The visual toggle background */
+        .theme-toggle {
+            cursor: pointer;
+            width: 50px;
+            height: 26px;
+            background-color: var(--card-border);
+            display: block;
+            border-radius: 100px;
+            position: relative;
+            transition: background-color 0.3s ease;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* The toggle circle/knob */
+        .theme-toggle::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            /* Sun icon default */
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="%23f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 12px;
+        }
+
+        /* When checked (Dark Mode active) */
+        .theme-checkbox:checked+.theme-toggle {
+            background-color: #3b82f6;
+            /* Accent color */
+        }
+
+        .theme-checkbox:checked+.theme-toggle::after {
+            transform: translateX(24px);
+            background-color: #111827;
+            /* Moon icon */
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="%23fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 10px;
+        }
+
+        /* INVERT VISUALS IF OS IS ALREADY DARK */
+        @media (prefers-color-scheme: dark) {
+            .theme-toggle::after {
+                transform: translateX(24px);
+                background-color: #111827;
+                background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="%23fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>');
+                background-size: 10px;
+            }
+
+            .theme-toggle {
+                background-color: #3b82f6;
+            }
+
+            .theme-checkbox:checked+.theme-toggle::after {
+                transform: translateX(0);
+                background-color: #ffffff;
+                background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="%23f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>');
+                background-size: 12px;
+            }
+
+            .theme-checkbox:checked+.theme-toggle {
+                background-color: var(--card-border);
+            }
+        }
+
+        /* MAIN CONTENT AREA */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 3.5rem;
+            /* Generous whitespace */
+        }
+
+        /* CLIENT CARD */
+        .client-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .client-card:hover {
+            box-shadow: var(--shadow-hover);
+            border-color: var(--text-secondary);
+        }
+
+        .client-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--card-border);
+            display: flex;
+            align-items: center;
+        }
+
+        .client-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Subtle status dot indicator next to client name */
+        .client-name::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: var(--status-color);
+            border-radius: 50%;
+            margin-right: 12px;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+        }
+
+        /* Container size based precisely on Looker Studio's default 600x443 aspect ratio */
+        .iframe-container {
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.015);
+            /* Slight contrast while loading */
+            position: relative;
+            padding-bottom: calc(443 / 600 * 100%);
+            overflow: hidden;
+        }
+
+        /* Modifier for 600x200 wide aspect ratio embed */
+        .iframe-container.ratio-wide {
+            padding-bottom: calc(200 / 600 * 100%);
+        }
+
+        /* For Dark mode loading background */
+        @media (prefers-color-scheme: dark) {
+            :root:not(.theme-light) .iframe-container {
+                background-color: rgba(255, 255, 255, 0.015);
+            }
+        }
+
+        body.theme-dark .iframe-container {
+            background-color: rgba(255, 255, 255, 0.015);
+        }
+
+        .iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+            border-bottom-left-radius: var(--radius-lg);
+            border-bottom-right-radius: var(--radius-lg);
+        }
+
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-wrap: wrap;
+                padding: 1rem 1.5rem;
+                gap: 1rem;
+            }
+
+            .page-title {
+                margin: 0;
+                width: 100%;
+                order: 3;
+                font-size: 0.95rem;
+                padding-top: 0.75rem;
+                border-top: 1px solid var(--header-border);
+            }
+
+            .main-content {
+                padding: 1.5rem;
+                gap: 2rem;
+            }
+
+            .client-header {
+                padding: 1.25rem 1.5rem;
+            }
+
+            /* Iframe container retains aspect-ratio scaling intrinsically */
+        }
+    </style>

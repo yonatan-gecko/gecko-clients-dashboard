@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Performance Dashboards</title>
+
+    <!-- Using Google Fonts for a professional modern look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Extracted External CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<!-- Optional: Add class="theme-light" or class="theme-dark" to the body tag to override system preferences -->
+
+<body>
+
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">Agency Logo</div>
+            <h1 class="page-title">Client Performance Dashboard</h1>
+            <div class="theme-toggle-wrapper">
+                <span class="theme-label-text">Dark Mode</span>
+                <input type="checkbox" id="theme-switch" class="theme-checkbox">
+                <label for="theme-switch" class="theme-toggle" aria-label="Toggle Dark Mode"></label>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content" id="dashboard-container">
+        <!-- Client reports will be dynamically injected here by Javascript -->
+    </main>
+
+    <!-- Script to dynamically load HTML fragments from the /reports directory -->
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const container = document.getElementById('dashboard-container');
+
+            // To be dynamic without a backend API returning a directory listing, 
+            // we define the known reports. In a real server environment, 
+            // you might fetch a JSON array of files.
+            const reports = [
+                "Udi Bar.html",
+                "Elements by Tal Man.html",
+                "Yael Admoni.html",
+                "Nola American Bakery.html",
+                "Maimon Website.html"
+            ];
+
+            for (const reportFile of reports) {
+                try {
+                    // Explicitly URL encode the filename to safely handle spaces
+                    const response = await fetch(`./reports/${encodeURIComponent(reportFile)}`);
+                    if (!response.ok) throw new Error(`Could not load ${reportFile}`);
+
+                    const embedHtml = await response.text();
+
+                    // Parse the client name from the filename (remove .html)
+                    const clientName = reportFile.replace(/\.[^/.]+$/, "");
+
+                    // Dynamically extract width and height from the raw HTML embed code
+                    // to mathematically calculate the perfect aspect ratio for any embed!
+                    const widthMatch = embedHtml.match(/width="(\d+)"/);
+                    const heightMatch = embedHtml.match(/height="(\d+)"/);
+
+                    // Default fallback aspect ratio if dimensions aren't explicitly provided
+                    let paddingOverride = "calc(443 / 600 * 100%)";
+                    if (widthMatch && heightMatch) {
+                        paddingOverride = `calc(${heightMatch[1]} / ${widthMatch[1]} * 100%)`;
+                    }
+
+                    // Build the client section mapping using an inline style override for the height
+                    const sectionHTML = `
+                        <section class="client-card">
+                            <div class="client-header">
+                                <h2 class="client-name">${clientName}</h2>
+                            </div>
+                            <div class="iframe-container" style="padding-bottom: ${paddingOverride};">
+                                ${embedHtml}
+                            </div>
+                        </section>
+                    `;
+
+                    // Append to the DOM
+                    container.insertAdjacentHTML('beforeend', sectionHTML);
+
+                } catch (error) {
+                    console.error("Error loading report:", error);
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
