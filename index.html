@@ -58,9 +58,6 @@
             const container = document.getElementById('dashboard-container');
             const navContainer = document.getElementById('client-nav');
 
-            // To be dynamic without a backend API returning a directory listing, 
-            // we define the known reports. In a real server environment, 
-            // you might fetch a JSON array of files.
             const reports = [
                 "Udi Bar.html",
                 "Elements by Tal Man.html",
@@ -68,6 +65,64 @@
                 "Nola American Bakery.html",
                 "Maimon Website.html"
             ];
+
+            const clientData = {
+                "Udi Bar": {
+                    dashboard: { url: "https://docs.google.com/spreadsheets/d/1-skleP69NQTgNPHUnE778q1jDx31P5Dt0k1jp2LWDrM/edit?gid=1482883680#gid=1482883680", label: "Dashboard" },
+                    drive: { url: "https://drive.google.com/drive/folders/1YkIjTRNsNaGCIaIVN7UawWGT206_6PqW", label: "Drive Folder" },
+                    social: { url: "https://www.instagram.com/drudibarr/", label: "Instagram" },
+                    ads: { url: "https://ads.google.com/aw/campaigns?ocid=7164301110&ascid=7164301110&euid=1482534637&__u=9730191813&uscid=357780932&__c=5724271268&authuser=0", label: "Google Ads" },
+                    website: { url: "https://www.dr-barr.com/he/", label: "dr-barr.com" },
+                    backend: { url: "https://www.dr-barr.com/wp-admin/", label: "WordPress Admin" }
+                },
+                "Elements by Tal Man": {
+                    dashboard: { url: "https://docs.google.com/spreadsheets/d/1TNBCAVmdJxDBm4QsZdQo9SODA9RizKY7kq8Z5I5bbHk/edit?gid=0#gid=0", label: "Dashboard" },
+                    drive: { url: "https://drive.google.com/drive/folders/1ceUug1XnTWaQ9TwISRkLj3Z6yP3Ih077", label: "Drive Folder" },
+                    social: { url: "https://www.instagram.com/elements_by_tal_man/", label: "Instagram" },
+                    ads: { url: "https://adsmanager.facebook.com/adsmanager/manage/campaigns?act=481050401067838&business_id=148648279319173&global_scope_id=148648279319173&attribution_windows=default&column_preset=10163858906964197&date=2026-01-26_2026-01-27%2Cyesterday&insights_date=2026-01-26_2026-01-27%2Cyesterday&filter_set=campaign.impressions-NUMBER%1EGREATER_THAN%1E0&quick_view_id=10163842464614197", label: "Meta Ads" },
+                    website: { url: "https://talman.co.il/", label: "talman.co.il" },
+                    backend: { url: "https://admin.shopify.com/store/7d07e9-f1/analytics/reports/total_sales_over_time", label: "Shopify Backend" }
+                },
+                "Yael Admoni": {
+                    dashboard: { url: "https://docs.google.com/spreadsheets/d/1gAkO6aeVrDWiVm0N1qMP4eyM9Kggww3wF_WoVTdNC_o/edit?gid=43574259#gid=43574259", label: "Dashboard" },
+                    drive: { url: "https://drive.google.com/drive/folders/18Fwu7ha98bY3zP6YQ5fcDgSksvz_TgFP", label: "Drive Folder" },
+                    social: { url: "https://www.instagram.com/yaeladmoni/", label: "Instagram" },
+                    ads: { url: "https://ads.google.com/aw/campaigns?ocid=6465756846&ascid=6465756846&euid=1482534637&__u=9730191813&uscid=357780932&__c=5724271268&authuser=0", label: "Google Ads" },
+                    website: { url: "https://yaeladmoni.com/?srsltid=AfmBOorkXGvaOq_9-lzbIT2-v34QHtICKBCYfoSn00MnWvfHCfhpggAq", label: "yaeladmoni.com" },
+                    backend: { url: "https://admin.shopify.com/store/yaeladmoni", label: "Shopify Backend" }
+                },
+                "Nola American Bakery": {
+                    dashboard: { url: "https://docs.google.com/spreadsheets/d/1g7kdgLGWD2lTmAmb7o_ow5AfdIgD4vBNb_KvHnWJKWY/edit?gid=1525165723#gid=1525165723", label: "Dashboard" },
+                    drive: { url: "https://drive.google.com/drive/folders/1mc6It149YzIw5Cbkr44LEHOU9-AuJLoD", label: "Drive Folder" },
+                    social: { url: "https://www.instagram.com/nola_american_bakery/?hl=en", label: "Instagram" },
+                    ads: { url: "https://adsmanager.facebook.com/adsmanager/manage/campaigns?act=355196194&business_id=174834508571284&global_scope_id=174834508571284", label: "Meta Ads" },
+                    website: { url: "https://www.nola-b.co.il/", label: "nola-b.co.il" },
+                    backend: { url: "#", label: "Website Backend" }
+                },
+                "Maimon Website": {
+                    dashboard: { url: "https://docs.google.com/spreadsheets/d/1mcda2NmPF77AoA9sTaeq7lQQVeLZng7dNi4s4WeCrJQ/edit?gid=0#gid=0", label: "Dashboard" },
+                    drive: { url: "https://drive.google.com/drive/folders/1oaD2tQRN2jN3H8bOc8bCet0nkMk5deQt", label: "Drive Folder" },
+                    social: { url: "https://www.instagram.com/maimons_baking_?igsh=OGg2OHJwcWZic2Zx", label: "Instagram" },
+                    ads: { url: "https://adsmanager.facebook.com/adsmanager/manage/campaigns?act=841333458850837&business_id=609463445121469&global_scope_id=609463445121469", label: "Meta Ads" },
+                    website: { url: "https://maimongroup.co.il/", label: "maimongroup.co.il" },
+                    backend: { url: "#", label: "Website Backend" }
+                }
+            };
+
+            const getTitle = (info) => {
+                if (!info || !info.url || info.url === "#") return info ? info.label : "Not available";
+                return info.url.length > 40 ? info.label : info.url;
+            };
+
+            const renderIcon = (info, defaultSvg) => {
+                if (!info || !info.url || info.url === "#") return defaultSvg;
+                try {
+                    const hostname = new URL(info.url).hostname;
+                    return `<img src="https://www.google.com/s2/favicons?domain=${encodeURIComponent(hostname)}&sz=64" alt="${info.label}" width="18" height="18" style="object-fit: contain; border-radius: 2px;">`;
+                } catch {
+                    return defaultSvg;
+                }
+            };
 
             for (const reportFile of reports) {
                 try {
@@ -80,6 +135,15 @@
 
                     // Parse the client name from the filename (remove .html)
                     const clientName = reportFile.replace(/\.[^/.]+$/, "");
+
+                    const clientInfo = clientData[clientName] || {
+                        dashboard: { url: "#", label: "Dashboard" },
+                        drive: { url: "#", label: "Drive Folder" },
+                        social: { url: "#", label: "Social Pages" },
+                        ads: { url: "#", label: "Ad Platform" },
+                        website: { url: "#", label: "Website" },
+                        backend: { url: "#", label: "Website Backend" }
+                    };
 
                     // Dynamically extract width and height from the raw HTML embed code
                     // to mathematically calculate the perfect aspect ratio for any embed!
@@ -95,8 +159,12 @@
                     // Create a safe ID for linking
                     const sectionId = 'client-' + clientName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
+                    // Extract the raw image string from renderIcon to use in nav link, empty string as fallback
+                    const menuIcon = renderIcon(clientInfo.website, "");
+                    const menuIconWithClass = menuIcon ? menuIcon.replace('<img', '<img class="nav-icon"') : "";
+
                     // Create navigation link
-                    const navLinkHTML = `<a href="#${sectionId}" class="nav-link">${clientName}</a>`;
+                    const navLinkHTML = `<a href="#${sectionId}" class="nav-link">${menuIconWithClass} <span class="nav-text">${clientName}</span></a>`;
                     navContainer.insertAdjacentHTML('beforeend', navLinkHTML);
 
                     // Build the client section mapping using an inline style override for the height
@@ -104,6 +172,26 @@
                         <section id="${sectionId}" class="client-card">
                             <div class="client-header">
                                 <h2 class="client-name">${clientName}</h2>
+                                <div class="client-links">
+                                    <a href="${clientInfo.dashboard.url}" class="client-link" title="${getTitle(clientInfo.dashboard)}" target="_blank" aria-label="Dashboard">
+                                        ${renderIcon(clientInfo.dashboard, `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layout-dashboard"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>`)}
+                                    </a>
+                                    <a href="${clientInfo.drive.url}" class="client-link" title="${getTitle(clientInfo.drive)}" target="_blank" aria-label="Drive Folder">
+                                        ${renderIcon(clientInfo.drive, `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>`)}
+                                    </a>
+                                    <a href="${clientInfo.social.url}" class="client-link" title="${getTitle(clientInfo.social)}" target="_blank" aria-label="Social Pages">
+                                        ${renderIcon(clientInfo.social, `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-instagram"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>`)}
+                                    </a>
+                                    <a href="${clientInfo.ads.url}" class="client-link" title="${getTitle(clientInfo.ads)}" target="_blank" aria-label="Ad Platform">
+                                        ${renderIcon(clientInfo.ads, `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-megaphone"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>`)}
+                                    </a>
+                                    <a href="${clientInfo.website.url}" class="client-link" title="${getTitle(clientInfo.website)}" target="_blank" aria-label="Website">
+                                        ${renderIcon(clientInfo.website, `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-globe"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>`)}
+                                    </a>
+                                    <a href="${clientInfo.backend.url}" class="client-link" title="${getTitle(clientInfo.backend)}" target="_blank" aria-label="Website Backend">
+                                        ${renderIcon(clientInfo.backend, `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-server"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg>`)}
+                                    </a>
+                                </div>
                             </div>
                             <div class="iframe-container" style="height: ${heightOverride};">
                                 ${embedHtml}

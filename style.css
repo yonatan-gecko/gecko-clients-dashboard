@@ -146,7 +146,7 @@ body {
     height: 24px;
     background: linear-gradient(135deg, #3b82f6, #6366f1);
     border-radius: 6px;
-} 
+}
 
 .page-title {
     font-family: 'Plus Jakarta Sans', sans-serif;
@@ -333,13 +333,20 @@ body {
     font-size: 0.95rem;
     font-weight: 500;
     padding: 0.6rem 1rem;
-    margin-left: -1rem;
+    /* margin-left: -1rem; */
     border-radius: 8px;
     transition: all 0.2s ease;
     border: 1px solid transparent;
     display: flex;
     align-items: center;
+    gap: 10px;
     position: relative;
+}
+
+.nav-icon {
+    flex-shrink: 0;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 /* Accent border indicator for active/hover */
@@ -410,6 +417,7 @@ body {
     border-bottom: 1px solid var(--card-border);
     display: flex;
     align-items: center;
+    justify-content: space-between;
 }
 
 .client-name {
@@ -420,6 +428,34 @@ body {
     letter-spacing: -0.01em;
     display: flex;
     align-items: center;
+}
+
+.client-links {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.client-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    color: var(--text-secondary);
+    background-color: transparent;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.client-link:hover,
+.client-link:focus {
+    color: var(--text-primary);
+    background-color: var(--card-bg);
+    border-color: var(--card-border);
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-2px);
 }
 
 /* Subtle status dot indicator next to client name */
