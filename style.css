@@ -1,377 +1,528 @@
-    <style>
-        /* 
+/* 
          * DESIGN SYSTEM & THEME VARIABLES
          * To manually set the theme, add class="theme-light" or class="theme-dark" to the <body> tag.
          * Otherwise, it defaults to the system preference.
          */
-        :root,
-        body.theme-light {
-            /* Light Theme Options */
-            --bg-color: #f1f5f9;
-            --text-primary: #0f172a;
-            --text-secondary: #475569;
-            --card-bg: #ffffff;
-            --card-border: #e2e8f0;
-            --header-bg: rgba(255, 255, 255, 0.85);
-            --header-border: #e2e8f0;
-            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
-            --shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
-            --radius-lg: 16px;
-            --status-color: #10b981;
-        }
+:root,
+body.theme-light {
+    /* Light Theme Options */
+    --bg-color: #f1f5f9;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --card-bg: #ffffff;
+    --card-border: #e2e8f0;
+    --header-bg: rgba(255, 255, 255, 0.85);
+    --header-border: #e2e8f0;
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+    --shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+    --radius-lg: 16px;
+    --status-color: #10b981;
+}
 
-        body.theme-dark {
-            /* Manual Dark Theme */
-            --bg-color: #0b0f19;
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --card-bg: #111827;
-            --card-border: #1f2937;
-            --header-bg: rgba(11, 15, 25, 0.85);
-            --header-border: #1f2937;
-            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.5);
-            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
-            --shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
-        }
+body.theme-dark {
+    /* Manual Dark Theme */
+    --bg-color: #0b0f19;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --card-bg: #111827;
+    --card-border: #1f2937;
+    --header-bg: rgba(11, 15, 25, 0.85);
+    --header-border: #1f2937;
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.5);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+    --shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+}
 
-        /* OVERRIDES: When checkbox is checked, force Dark Mode */
-        body:has(.theme-checkbox:checked) {
-            --bg-color: #0b0f19 !important;
-            --text-primary: #f8fafc !important;
-            --text-secondary: #94a3b8 !important;
-            --card-bg: #111827 !important;
-            --card-border: #1f2937 !important;
-            --header-bg: rgba(11, 15, 25, 0.85) !important;
-            --header-border: #1f2937 !important;
-            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.5) !important;
-            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3) !important;
-            --shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4) !important;
-        }
+/* OVERRIDES: When checkbox is checked, force Dark Mode */
+body:has(.theme-checkbox:checked) {
+    --bg-color: #0b0f19 !important;
+    --text-primary: #f8fafc !important;
+    --text-secondary: #94a3b8 !important;
+    --card-bg: #111827 !important;
+    --card-border: #1f2937 !important;
+    --header-bg: rgba(11, 15, 25, 0.85) !important;
+    --header-border: #1f2937 !important;
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.5) !important;
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3) !important;
+    --shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4) !important;
+}
 
-        body:has(.theme-checkbox:checked) .iframe-container {
-            background-color: rgba(255, 255, 255, 0.015) !important;
-        }
+body:has(.theme-checkbox:checked) .iframe-container {
+    background-color: rgba(255, 255, 255, 0.015) !important;
+}
 
-        @media (prefers-color-scheme: dark) {
-            :root:not(.theme-light) {
-                /* System Dark Theme defaults */
-                --bg-color: #0b0f19;
-                --text-primary: #f8fafc;
-                --text-secondary: #94a3b8;
-                --card-bg: #111827;
-                --card-border: #1f2937;
-                --header-bg: rgba(11, 15, 25, 0.85);
-                --header-border: #1f2937;
-                --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.5);
-                --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
-                --shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
-            }
+@media (prefers-color-scheme: dark) {
+    :root:not(.theme-light) {
+        /* System Dark Theme defaults */
+        --bg-color: #0b0f19;
+        --text-primary: #f8fafc;
+        --text-secondary: #94a3b8;
+        --card-bg: #111827;
+        --card-border: #1f2937;
+        --header-bg: rgba(11, 15, 25, 0.85);
+        --header-border: #1f2937;
+        --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.5);
+        --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+        --shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+    }
 
-            /* INVERT LOGIC: If system is dark, checking the box should force Light Mode instead! */
-            body:has(.theme-checkbox:checked) {
-                --bg-color: #f1f5f9 !important;
-                --text-primary: #0f172a !important;
-                --text-secondary: #475569 !important;
-                --card-bg: #ffffff !important;
-                --card-border: #e2e8f0 !important;
-                --header-bg: rgba(255, 255, 255, 0.85) !important;
-                --header-border: #e2e8f0 !important;
-                --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05) !important;
-                --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05) !important;
-                --shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05) !important;
-            }
+    /* INVERT LOGIC: If system is dark, checking the box should force Light Mode instead! */
+    body:has(.theme-checkbox:checked) {
+        --bg-color: #f1f5f9 !important;
+        --text-primary: #0f172a !important;
+        --text-secondary: #475569 !important;
+        --card-bg: #ffffff !important;
+        --card-border: #e2e8f0 !important;
+        --header-bg: rgba(255, 255, 255, 0.85) !important;
+        --header-border: #e2e8f0 !important;
+        --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05) !important;
+        --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05) !important;
+        --shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05) !important;
+    }
 
-            body:has(.theme-checkbox:checked) .iframe-container {
-                background-color: rgba(0, 0, 0, 0.015) !important;
-            }
-        }
+    body:has(.theme-checkbox:checked) .iframe-container {
+        background-color: rgba(0, 0, 0, 0.015) !important;
+    }
+}
 
-        /* RESET & BASE STYLES */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+/* RESET & BASE STYLES */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            min-height: 100vh;
-        }
+html {
+    scroll-behavior: smooth;
+}
 
-        /* HEADER */
-        .header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background-color: var(--header-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--header-border);
-        }
+body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+}
 
-        .header-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+/* HEADER */
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: var(--header-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--header-border);
+}
 
-        .logo {
-            font-weight: 700;
-            font-size: 1.25rem;
-            letter-spacing: -0.02em;
-            color: var(--text-primary);
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-        }
+.header-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-        /* Pure CSS generic logo icon for a polished feel */
-        .logo::before {
-            content: '';
-            display: inline-block;
-            width: 24px;
-            height: 24px;
-            background: linear-gradient(135deg, #3b82f6, #6366f1);
-            border-radius: 6px;
-        }
+.logo {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
 
-        .page-title {
-            font-size: 1.05rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            margin-right: auto;
-            margin-left: 2.5rem;
-        }
+/* Pure CSS generic logo icon for a polished feel */
+.logo::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    border-radius: 6px;
+} 
 
-        .theme-toggle-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
+.page-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-right: auto;
+    margin-left: 2.5rem;
+}
 
-        .theme-label-text {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-            letter-spacing: 0.01em;
-            display: none;
-            /* Hidden by default on mobile, shown on desktop */
-        }
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
 
-        @media (min-width: 600px) {
-            .theme-label-text {
-                display: inline-block;
-            }
-        }
+.live-datetime {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
 
-        /* The invisible checkbox */
-        .theme-checkbox {
-            opacity: 0;
-            position: absolute;
-            width: 0;
-            height: 0;
-        }
+/* Accent for the dot between date and time */
+.live-datetime span#date-display {
+    color: var(--text-primary);
+}
 
-        /* The visual toggle background */
-        .theme-toggle {
-            cursor: pointer;
-            width: 50px;
-            height: 26px;
-            background-color: var(--card-border);
-            display: block;
-            border-radius: 100px;
-            position: relative;
-            transition: background-color 0.3s ease;
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
+.theme-toggle-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-left: 1.5rem;
+    border-left: 1px solid var(--header-border);
+}
 
-        /* The toggle circle/knob */
-        .theme-toggle::after {
-            content: '';
-            position: absolute;
-            top: 3px;
-            left: 3px;
-            width: 20px;
-            height: 20px;
-            background-color: #ffffff;
-            border-radius: 50%;
-            transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-            /* Sun icon default */
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="%23f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>');
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: 12px;
-        }
+.theme-label-text {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    display: none;
+    /* Hidden by default on mobile, shown on desktop */
+}
 
-        /* When checked (Dark Mode active) */
-        .theme-checkbox:checked+.theme-toggle {
-            background-color: #3b82f6;
-            /* Accent color */
-        }
+@media (min-width: 600px) {
+    .theme-label-text {
+        display: inline-block;
+    }
+}
 
-        .theme-checkbox:checked+.theme-toggle::after {
-            transform: translateX(24px);
-            background-color: #111827;
-            /* Moon icon */
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="%23fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>');
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: 10px;
-        }
+/* The invisible checkbox */
+.theme-checkbox {
+    opacity: 0;
+    position: absolute;
+    width: 0;
+    height: 0;
+}
 
-        /* INVERT VISUALS IF OS IS ALREADY DARK */
-        @media (prefers-color-scheme: dark) {
-            .theme-toggle::after {
-                transform: translateX(24px);
-                background-color: #111827;
-                background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="%23fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>');
-                background-size: 10px;
-            }
+/* The visual toggle background */
+.theme-toggle {
+    cursor: pointer;
+    width: 50px;
+    height: 26px;
+    background-color: var(--card-border);
+    display: block;
+    border-radius: 100px;
+    position: relative;
+    transition: background-color 0.3s ease;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
 
-            .theme-toggle {
-                background-color: #3b82f6;
-            }
+/* The toggle circle/knob */
+.theme-toggle::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    /* Sun icon default */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="%23f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 12px;
+}
 
-            .theme-checkbox:checked+.theme-toggle::after {
-                transform: translateX(0);
-                background-color: #ffffff;
-                background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="%23f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>');
-                background-size: 12px;
-            }
+/* When checked (Dark Mode active) */
+.theme-checkbox:checked+.theme-toggle {
+    background-color: #3b82f6;
+    /* Accent color */
+}
 
-            .theme-checkbox:checked+.theme-toggle {
-                background-color: var(--card-border);
-            }
-        }
+.theme-checkbox:checked+.theme-toggle::after {
+    transform: translateX(24px);
+    background-color: #111827;
+    /* Moon icon */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="%23fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 10px;
+}
 
-        /* MAIN CONTENT AREA */
-        .main-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 3.5rem 2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 3.5rem;
-            /* Generous whitespace */
-        }
+/* INVERT VISUALS IF OS IS ALREADY DARK */
+@media (prefers-color-scheme: dark) {
+    .theme-toggle::after {
+        transform: translateX(24px);
+        background-color: #111827;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="%23fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>');
+        background-size: 10px;
+    }
 
-        /* CLIENT CARD */
-        .client-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-sm);
-            overflow: hidden;
-            transition: box-shadow 0.3s ease, border-color 0.3s ease;
-        }
+    .theme-toggle {
+        background-color: #3b82f6;
+    }
 
-        .client-card:hover {
-            box-shadow: var(--shadow-hover);
-            border-color: var(--text-secondary);
-        }
+    .theme-checkbox:checked+.theme-toggle::after {
+        transform: translateX(0);
+        background-color: #ffffff;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="%23f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>');
+        background-size: 12px;
+    }
 
-        .client-header {
-            padding: 1.5rem 2rem;
-            border-bottom: 1px solid var(--card-border);
-            display: flex;
-            align-items: center;
-        }
+    .theme-checkbox:checked+.theme-toggle {
+        background-color: var(--card-border);
+    }
+}
 
-        .client-name {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            letter-spacing: -0.01em;
-            display: flex;
-            align-items: center;
-        }
+/* LAYOUT WRAPPER */
+.layout-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-start;
+    padding: 2.5rem 2rem;
+    gap: 2rem;
+}
 
-        /* Subtle status dot indicator next to client name */
-        .client-name::before {
-            content: '';
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            background-color: var(--status-color);
-            border-radius: 50%;
-            margin-right: 12px;
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
-        }
+/* SIDEBAR NAVIGATION */
+.sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 7rem;
+    /* below header */
+    height: max-content;
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
+    padding-right: 1rem;
+    scrollbar-width: none;
+    /* Firefox */
+}
 
-        /* Container size based precisely on Looker Studio's default 600x443 aspect ratio */
-        .iframe-container {
-            width: 100%;
-            background-color: rgba(0, 0, 0, 0.015);
-            /* Slight contrast while loading */
-            position: relative;
-            padding-bottom: calc(443 / 600 * 100%);
-            overflow: hidden;
-        }
+.sidebar::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, etc */
+}
 
-        /* Modifier for 600x200 wide aspect ratio embed */
-        .iframe-container.ratio-wide {
-            padding-bottom: calc(200 / 600 * 100%);
-        }
+.sidebar-title {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
 
-        /* For Dark mode loading background */
-        @media (prefers-color-scheme: dark) {
-            :root:not(.theme-light) .iframe-container {
-                background-color: rgba(255, 255, 255, 0.015);
-            }
-        }
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
 
-        body.theme-dark .iframe-container {
-            background-color: rgba(255, 255, 255, 0.015);
-        }
+.nav-link {
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 0.6rem 1rem;
+    margin-left: -1rem;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
 
-        .iframe-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: block;
-            border-bottom-left-radius: var(--radius-lg);
-            border-bottom-right-radius: var(--radius-lg);
-        }
+/* Accent border indicator for active/hover */
+.nav-link::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%) scaleY(0);
+    height: 60%;
+    width: 3px;
+    background-color: #3b82f6;
+    /* Blue accent */
+    border-radius: 0 4px 4px 0;
+    transition: transform 0.2s ease;
+}
 
-        /* RESPONSIVE DESIGN */
-        @media (max-width: 768px) {
-            .header-container {
-                flex-wrap: wrap;
-                padding: 1rem 1.5rem;
-                gap: 1rem;
-            }
+.nav-link:hover,
+.nav-link:focus {
+    color: var(--text-primary);
+    background-color: var(--card-bg);
+    border-color: var(--card-border);
+    box-shadow: var(--shadow-sm);
+}
 
-            .page-title {
-                margin: 0;
-                width: 100%;
-                order: 3;
-                font-size: 0.95rem;
-                padding-top: 0.75rem;
-                border-top: 1px solid var(--header-border);
-            }
+/* Active State Styles */
+.nav-link.active {
+    color: var(--text-primary);
+    background-color: var(--card-bg);
+    border-color: var(--card-border);
+    box-shadow: var(--shadow-sm);
+    font-weight: 600;
+}
 
-            .main-content {
-                padding: 1.5rem;
-                gap: 2rem;
-            }
+.nav-link.active::before {
+    transform: translateY(-50%) scaleY(1);
+}
 
-            .client-header {
-                padding: 1.25rem 1.5rem;
-            }
+/* MAIN CONTENT AREA */
+.main-content {
+    flex-grow: 1;
+    min-width: 0;
+    /* Prevents flex blowout */
+    display: flex;
+    flex-direction: column;
+    gap: 3.5rem;
+}
 
-            /* Iframe container retains aspect-ratio scaling intrinsically */
-        }
-    </style>
+/* CLIENT CARD */
+.client-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    scroll-margin-top: calc(85px + 2rem);
+    /* Matches header height + extra padding */
+}
+
+.client-card:hover {
+    box-shadow: var(--shadow-hover);
+    border-color: var(--text-secondary);
+}
+
+.client-header {
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid var(--card-border);
+    display: flex;
+    align-items: center;
+}
+
+.client-name {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+}
+
+/* Subtle status dot indicator next to client name */
+.client-name::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: var(--status-color);
+    border-radius: 50%;
+    margin-right: 12px;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+}
+
+/* Container allows mouse resizing vertically */
+.iframe-container {
+    width: 100%;
+    min-height: 200px;
+    height: 600px;
+    /* Default starting height */
+    background-color: rgba(0, 0, 0, 0.015);
+    position: relative;
+    overflow: hidden;
+    resize: vertical;
+    /* Enables the drag handle on the bottom right */
+}
+
+/* We no longer need ratio modifiers since users will drag to size */
+.iframe-container.ratio-wide {
+    height: 200px;
+}
+
+/* For Dark mode loading background */
+@media (prefers-color-scheme: dark) {
+    :root:not(.theme-light) .iframe-container {
+        background-color: rgba(255, 255, 255, 0.015);
+    }
+}
+
+body.theme-dark .iframe-container {
+    background-color: rgba(255, 255, 255, 0.015);
+}
+
+.iframe-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+    border-bottom-left-radius: var(--radius-lg);
+    border-bottom-right-radius: var(--radius-lg);
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+    .header-container {
+        flex-wrap: wrap;
+        padding: 1rem 1.5rem;
+        gap: 1rem;
+    }
+
+    .page-title {
+        margin: 0;
+        width: 100%;
+        order: 3;
+        font-size: 0.95rem;
+        padding-top: 0.75rem;
+        border-top: 1px solid var(--header-border);
+    }
+
+    .layout-wrapper {
+        flex-direction: column;
+        padding: 1.5rem;
+        gap: 2rem;
+    }
+
+    .sidebar {
+        width: 100%;
+        position: static;
+        max-height: none;
+        padding-right: 0;
+    }
+
+    .sidebar-nav {
+        flex-direction: row;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+    }
+
+    .nav-link {
+        white-space: nowrap;
+    }
+
+    .main-content {
+        padding: 0;
+        gap: 2rem;
+    }
+
+    .client-header {
+        padding: 1.25rem 1.5rem;
+    }
+
+    /* Iframe container retains aspect-ratio scaling intrinsically */
+}

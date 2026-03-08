@@ -6,10 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Client Performance Dashboards</title>
 
-    <!-- Using Google Fonts for a professional modern look -->
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <!-- Using modern, premium fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
 
     <!-- Extracted External CSS -->
     <link rel="stylesheet" href="style.css">
@@ -20,24 +24,39 @@
 
     <header class="header">
         <div class="header-container">
-            <div class="logo">Agency Logo</div>
+            <div class="logo">Gecko Digital</div>
             <h1 class="page-title">Client Performance Dashboard</h1>
-            <div class="theme-toggle-wrapper">
-                <span class="theme-label-text">Dark Mode</span>
-                <input type="checkbox" id="theme-switch" class="theme-checkbox">
-                <label for="theme-switch" class="theme-toggle" aria-label="Toggle Dark Mode"></label>
+            <div class="header-controls">
+                <div class="live-datetime" id="live-datetime">
+                    <span id="date-display"></span> • <span id="time-display"></span>
+                </div>
+                <div class="theme-toggle-wrapper">
+                    <span class="theme-label-text">Dark Mode</span>
+                    <input type="checkbox" id="theme-switch" class="theme-checkbox">
+                    <label for="theme-switch" class="theme-toggle" aria-label="Toggle Dark Mode"></label>
+                </div>
             </div>
         </div>
     </header>
 
-    <main class="main-content" id="dashboard-container">
-        <!-- Client reports will be dynamically injected here by Javascript -->
-    </main>
+    <div class="layout-wrapper">
+        <aside class="sidebar">
+            <h3 class="sidebar-title">Clients</h3>
+            <nav class="sidebar-nav" id="client-nav">
+                <!-- Navigation links will be dynamically injected here -->
+            </nav>
+        </aside>
+
+        <main class="main-content" id="dashboard-container">
+            <!-- Client reports will be dynamically injected here by Javascript -->
+        </main>
+    </div>
 
     <!-- Script to dynamically load HTML fragments from the /reports directory -->
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             const container = document.getElementById('dashboard-container');
+            const navContainer = document.getElementById('client-nav');
 
             // To be dynamic without a backend API returning a directory listing, 
             // we define the known reports. In a real server environment, 
@@ -53,7 +72,8 @@
             for (const reportFile of reports) {
                 try {
                     // Explicitly URL encode the filename to safely handle spaces
-                    const response = await fetch(`./reports/${encodeURIComponent(reportFile)}`);
+                    // Also use cache: no-store so the browser never gets stuck on old iframe sizes when you edit the files
+                    const response = await fetch(`./reports/${encodeURIComponent(reportFile)}`, { cache: 'no-store' });
                     if (!response.ok) throw new Error(`Could not load ${reportFile}`);
 
                     const embedHtml = await response.text();
@@ -66,19 +86,26 @@
                     const widthMatch = embedHtml.match(/width="(\d+)"/);
                     const heightMatch = embedHtml.match(/height="(\d+)"/);
 
-                    // Default fallback aspect ratio if dimensions aren't explicitly provided
-                    let paddingOverride = "calc(443 / 600 * 100%)";
-                    if (widthMatch && heightMatch) {
-                        paddingOverride = `calc(${heightMatch[1]} / ${widthMatch[1]} * 100%)`;
+                    // Default fallback height if dimensions aren't explicitly provided
+                    let heightOverride = "600px";
+                    if (heightMatch) {
+                        heightOverride = `${heightMatch[1]}px`;
                     }
+
+                    // Create a safe ID for linking
+                    const sectionId = 'client-' + clientName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+
+                    // Create navigation link
+                    const navLinkHTML = `<a href="#${sectionId}" class="nav-link">${clientName}</a>`;
+                    navContainer.insertAdjacentHTML('beforeend', navLinkHTML);
 
                     // Build the client section mapping using an inline style override for the height
                     const sectionHTML = `
-                        <section class="client-card">
+                        <section id="${sectionId}" class="client-card">
                             <div class="client-header">
                                 <h2 class="client-name">${clientName}</h2>
                             </div>
-                            <div class="iframe-container" style="padding-bottom: ${paddingOverride};">
+                            <div class="iframe-container" style="height: ${heightOverride};">
                                 ${embedHtml}
                             </div>
                         </section>
@@ -92,6 +119,69 @@
                 }
             }
         });
+
+        // Live Date & Time Script
+        function updateDateTime() {
+            const dateDisplay = document.getElementById('date-display');
+            const timeDisplay = document.getElementById('time-display');
+
+            const now = new Date();
+
+            // Format Date: e.g., "Mon, Mar 8"
+            const dateOptions = { weekday: 'short', month: 'short', day: 'numeric' };
+            dateDisplay.textContent = now.toLocaleDateString('en-US', dateOptions);
+
+            // Format Time: e.g., "12:37 AM"
+            const timeOptions = { hour: 'numeric', minute: '2-digit', hour12: true };
+            timeDisplay.textContent = now.toLocaleTimeString('en-US', timeOptions);
+        }
+
+        // Run immediately and update every minute
+        updateDateTime();
+        setInterval(updateDateTime, 60000);
+
+        // Scroll Spy / Active Navigation Highlighting
+        // Using IntersectionObserver for high-performance scroll detection
+        const navObserverOptions = {
+            root: null,
+            rootMargin: '-20% 0px -79% 0px', // Triggers when element is at top 20% of viewport
+            threshold: 0
+        };
+
+        const navObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Remove active class from all links
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        link.classList.remove('active');
+                    });
+
+                    // Add active class to corresponding link
+                    const activeId = entry.target.getAttribute('id');
+                    const activeLink = document.querySelector(`.nav-link[href="#${activeId}"]`);
+                    if (activeLink) {
+                        activeLink.classList.add('active');
+
+                        // Scroll sidebar to ensure active link is visible
+                        activeLink.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
+                }
+            });
+        }, navObserverOptions);
+
+        // We need to wait a tiny bit for the dynamic HTML injection to finish before observing them
+        setTimeout(() => {
+            document.querySelectorAll('.client-card').forEach(section => {
+                navObserver.observe(section);
+            });
+
+            // Set first item active manually on load just in case the observer hasn't fired yet
+            const firstLink = document.querySelector('.nav-link');
+            if (firstLink && window.scrollY === 0) {
+                firstLink.classList.add('active');
+            }
+        }, 1000);
+
     </script>
 </body>
 
